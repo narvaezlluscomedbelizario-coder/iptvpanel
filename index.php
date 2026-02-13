@@ -1,4 +1,7 @@
 <?php
+session_start();
+
+$_SESSION["server"] = "http://redworld.pro:8880";
 /*
  * @ PHP 5.6
  * @ Decoder version : 1.0.0.1
