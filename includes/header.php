@@ -31,46 +31,14 @@ if (!isset($_SESSION["webTvplayer"]) && empty($_SESSION["webTvplayer"]) && $acti
     echo "<script>window.location.href = 'index.php';</script>";
     exit;
 }
-if (empty($XClicenseIsval) && empty($XClocalKey)) {
-    echo "<script>window.location.href = 'player_install.php';</script>";
-    exit;
-}
-$checkLicense = webtvpanel_CheckLicense($XClicenseIsval, $XClocalKey);
-if ($checkLicense["status"] == "Active" && isset($checkLicense["localkey"]) && !empty($checkLicense["localkey"])) {
-    $New_XCStreamHostUrl = $XCStreamHostUrl;
-    $New_XClogoLinkval = $XClogoLinkval;
-    $New_XCcopyrighttextval = $XCcopyrighttextval;
-    $New_XCcontactUslinkval = $XCcontactUslinkval;
-    $New_XChelpLinkval = $XChelpLinkval;
-    $New_XClicenseIsval = $XClicenseIsval;
-    $New_XClocalKey = $checkLicense["localkey"];
-    $New_XCsitetitleval = $XCsitetitleval;
-    $response["result"] = "no";
-    $content = "<?php \n";
-    $content .= "\$XCStreamHostUrl = \"" . $New_XCStreamHostUrl . "\";" . "\n";
-    $content .= "\$XClogoLinkval = \"" . $New_XClogoLinkval . "\";" . "\n";
-    $content .= "\$XCcopyrighttextval = \"" . $New_XCcopyrighttextval . "\";" . "\n";
-    $content .= "\$XCcontactUslinkval = \"" . $New_XCcontactUslinkval . "\";" . "\n";
-    $content .= "\$XChelpLinkval = \"" . $New_XChelpLinkval . "\";" . "\n";
-    $content .= "\$XClicenseIsval = \"" . $New_XClicenseIsval . "\";" . "\n";
-    $content .= "\$XClocalKey = \"" . $New_XClocalKey . "\";" . "\n";
-    $content .= "\$XCsitetitleval = \"" . $New_XCsitetitleval . "\";" . "\n";
-    $content .= "?>";
-    if (file_exists("configuration.php")) {
-        unlink("configuration.php");
-    }
-    $fp = fopen("configuration.php", "w");
-    fwrite($fp, $content);
-    fclose($fp);
-    chmod("configuration.php", 420);
-    if (file_exists("configuration.php")) {
-        echo "<script>location.reload();</script>";
-        exit;
-    }
-}
-if ($checkLicense["status"] !== "Active" && $activePage !== "player_install") {
-    echo "<script>window.location.href = 'player_install.php';</script>";
-    exit;
+// ===== Railway mode: disable installer/license gate =====
+if (empty($XClicenseIsval)) $XClicenseIsval = "8nulled8";
+if (empty($XClocalKey))     $XClocalKey     = "railway";
+
+// Forzar licencia “Active” sin llamar a webtvpanel_CheckLicense()
+// y evitar re-escritura de configuration.php en runtime (unlink/chmod).
+$checkLicense = ["status" => "Active", "localkey" => $XClocalKey];
+// =======================================================
 }
 if (isset($_SESSION["webTvplayer"])) {
     $username = $_SESSION["webTvplayer"]["username"];
