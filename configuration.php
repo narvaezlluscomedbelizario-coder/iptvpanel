@@ -1,11 +1,13 @@
-<?php 
+<?php
 session_start();
-$XCStreamHostUrl = $_SESSION["server"];
-$XClogoLinkval = "images/logo.png";
-$XCcopyrighttextval = "";
+
+$XCStreamHostUrl = "http://redworld.pro:8880";
+
+$XCLogoLinkval = "images/logo.png";
+$XCopyrighttextval = "";
 $XCcontactUslinkval = "";
-$XChelpLinkval = "";
-$XClicenseIsval = "8nulled8";
-$XClocalKey = "";
-$XCsitetitleval = "";
+$XCheplLinkval = "";
+$XCLicenseIsval = "Snulled8";
+$XCLocalKey = "";
+$XCsiteitleval = "";
 ?>
